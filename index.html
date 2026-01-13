@@ -2,12 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Library + AudiobookBay Multi Search</title>
+  <title>BorrowBox + Libby Multi Search</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-<link rel="icon" href="favicon.jpg" type="image/jpg">
-
 
   <style>
     body {
@@ -59,17 +55,6 @@
       font-size: 1.2rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
-
-    #debug {
-      margin-top: 2rem;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 8px;
-      font-family: monospace;
-      font-size: 0.9rem;
-      white-space: pre-wrap;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    }
   </style>
 </head>
 
@@ -83,10 +68,9 @@
   </div>
 
   <div id="results" class="results"></div>
-<div id="debug"></div>
 
 <script>
-  async function go() {
+  function go() {
     const term = encodeURIComponent(document.getElementById('q').value);
 
     const libs = {
@@ -94,63 +78,35 @@
       "Leeds (BorrowBox)": "https://leeds.borrowbox.com/search?format=eAudiobooks&q=",
       "North Yorkshire (BorrowBox)": "https://northyorkshire.borrowbox.com/search?format=eAudiobooks&q=",
       "Libby (East Riding)": "https://libbyapp.com/search/eastridinguk/search/query-",
-      "AudiobookBay": "https://audiobookbay.lu/?s="
+      "Spotify Audiobooks": "https://open.spotify.com/search/"
     };
 
-    const results = document.getElementById('results');
-    const debug = document.getElementById('debug');
+    const container = document.getElementById('results');
+    container.innerHTML = "";
 
-    results.innerHTML = "";
-    debug.innerHTML = "";
-
-    for (const [name, base] of Object.entries(libs)) {
+    // Dynamic search links
+    Object.entries(libs).forEach(([name, base]) => {
       let url;
 
       if (name.includes("Libby")) {
         url = base + term + "/page-1";
+      } else if (name.includes("Spotify")) {
+        url = base + term + "/audiobooks";
       } else {
         url = base + term;
       }
 
-      // Add clickable button
-      results.innerHTML += `<a href="${url}" target="_blank">${name}</a>`;
-
-      // TEST MODE: open in hidden window and detect redirect
-      const finalUrl = await testRedirect(url);
-
-      debug.innerHTML += `
-        <div>
-          <strong>${name}:</strong><br>
-          <a href="${url}" target="_blank">${url}</a><br>
-          Final URL: ${finalUrl}
-        </div><br>
-      `;
-    }
-  }
-
-  function testRedirect(url) {
-    return new Promise(resolve => {
-      const w = window.open(url, "_blank", "width=10,height=10,left=-1000,top=-1000");
-
-      if (!w) {
-        resolve("Popup blocked");
-        return;
-      }
-
-      const check = setInterval(() => {
-        try {
-          // If redirect happened, this will show the final URL
-          const finalUrl = w.location.href;
-          clearInterval(check);
-          w.close();
-          resolve(finalUrl);
-        } catch (e) {
-          // Cross-origin still loading — keep waiting
-        }
-      }, 300);
+      container.innerHTML += `<a href="${url}" target="_blank">${name}</a>`;
     });
+
+    // Static links (same button style)
+    container.innerHTML += `
+      <a href="https://audiobookbay.lu/" target="_blank">AudiobookBay (Home)</a>
+      <a href="https://oceanofpdf.com/" target="_blank">Ocean of PDF</a>
+    `;
   }
 </script>
+
 
 </body>
 </html>
