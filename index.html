@@ -79,7 +79,7 @@
       "East Riding (BorrowBox)": "https://eastriding.borrowbox.com/search?format=eAudiobooks&q=",
       "Leeds (BorrowBox)": "https://leeds.borrowbox.com/search?format=eAudiobooks&q=",
       "North Yorkshire (BorrowBox)": "https://northyorkshire.borrowbox.com/search?format=eAudiobooks&q=",
-      "Spotify Audiobooks": "https://open.spotify.com/search/"
+      "Spotify": "https://open.spotify.com/search/"
     };
 
     const container = document.getElementById('results');
@@ -92,7 +92,7 @@
       if (name.includes("Libby")) {
         url = base + term + "/page-1";
       } else if (name.includes("Spotify")) {
-        url = base + term + "/audiobooks";
+        url = base + "audiobooks/" + term;
       } else {
         url = base + term;
       }
