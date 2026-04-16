@@ -67,6 +67,11 @@
   </div>
 
   <div class="search-bar">
+    <input id="countryBooks" placeholder="Search books by country">
+    <button onclick="searchBooksByCountry()" style="background: #e67e22;">Books</button>
+  </div>
+
+  <div class="search-bar">
     <input id="country" placeholder="Search by country">
     <button onclick="searchMusic()" style="background: #28a745;">Music</button>
   </div>
@@ -100,6 +105,28 @@
     `;
   }
 
+   // Search for books by country
+
+   // Helper to create URL-friendly slugs
+  function toSlug(str) {
+    return str.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  
+   function searchBooksByCountry() {
+    const raw = document.getElementById('countryBooks').value;
+    if (!raw) return;
+    const slug = toSlug(raw);
+    const container = document.getElementById('results');
+    container.innerHTML = `<h3>Books: ${raw}</h3>`;
+    
+    // Read Around the World link
+    container.innerHTML += `<a href="https://readaroundtheworldchallenge.com/books/tag/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Read Around the World: ${raw}</a>`;
+    
+    // Google Search for Novels/Biographies
+    const googleQuery = encodeURIComponent(`novels set in ${raw} AND biographies about people from ${raw}`);
+    container.innerHTML += `<a href="https://www.google.com/search?q=${googleQuery}" target="_blank" style="border-left: 5px solid #e67e22;">Google: Novels & Biographies (${raw})</a>`;
+  }
+  
   // Updated Music/Country Search Function including Chosic
   function searchMusic() {
     const countryRaw = document.getElementById('country').value;
