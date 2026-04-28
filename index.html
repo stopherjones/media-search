@@ -119,11 +119,12 @@
     const container = document.getElementById('results');
     container.innerHTML = `<h3>Books: ${raw}</h3>`;
     
+    // Goodreads link
+container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Goodreads: ${raw}</a>`;
+
+
     // Read Around the World link
     container.innerHTML += `<a href="https://readaroundtheworldchallenge.com/books/tag/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Read Around the World: ${raw}</a>`;
-
-// Goodreads link
-container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Goodreads: ${raw}</a>`;
     
     // Google Search for Novels/Biographies
     const googleQuery = encodeURIComponent(`novels set in ${raw} AND biographies about people from ${raw}`);
