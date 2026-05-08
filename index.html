@@ -92,7 +92,7 @@
     };
 
     const container = document.getElementById('results');
-    container.innerHTML = "<h3>Book Results</h3>"; // Added header for clarity
+    container.innerHTML = "<h3>Book Results</h3>"; 
 
     Object.entries(libs).forEach(([name, base]) => {
       let url = name.includes("Libby") ? base + term + "/page-1" : base + term;
@@ -105,33 +105,24 @@
     `;
   }
 
-   // Search for books by country
-
-   // Helper to create URL-friendly slugs
   function toSlug(str) {
     return str.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
   }
   
-   function searchBooksByCountry() {
+  function searchBooksByCountry() {
     const raw = document.getElementById('countryBooks').value;
     if (!raw) return;
     const slug = toSlug(raw);
     const container = document.getElementById('results');
     container.innerHTML = `<h3>Books: ${raw}</h3>`;
     
-    // Goodreads link
-container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Goodreads: ${raw}</a>`;
-
-
-    // Read Around the World link
+    container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Goodreads: ${raw}</a>`;
     container.innerHTML += `<a href="https://readaroundtheworldchallenge.com/books/tag/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Read Around the World: ${raw}</a>`;
     
-    // Google Search for Novels/Biographies
     const googleQuery = encodeURIComponent(`novels set in ${raw} AND biographies about people from ${raw}`);
     container.innerHTML += `<a href="https://www.google.com/search?q=${googleQuery}" target="_blank" style="border-left: 5px solid #e67e22;">Google: Novels & Biographies (${raw})</a>`;
   }
   
-  // Updated Music/Country Search Function including Chosic
   function searchMusic() {
     const countryRaw = document.getElementById('country').value;
     const country = encodeURIComponent(countryRaw);
@@ -157,6 +148,10 @@ container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" t
       {
         name: `Chosic: Music by Country`,
         url: `https://www.chosic.com/search-results/?q=${country}`
+      },
+      {
+        name: `Songlines Reviews: ${countryRaw}`,
+        url: `https://www.songlines.co.uk/reviews-search?searchText=${country}`
       }
     ];
 
@@ -167,5 +162,4 @@ container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" t
 </script>
 
 </body>
-
 </html>
