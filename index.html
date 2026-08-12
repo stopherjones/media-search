@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Books and music multi search</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <meta name="google-site-verification" content="z9n0lhtaop9VH_-yYuA5LYSZueR5IFPOXtmz3ffvnMw" />
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -53,10 +54,11 @@
       text-decoration: none;
       color: #0078d4;
       font-size: 1.2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     }
   </style>
 </head>
+
 <body>
 
   <h1>Books & Music Search</h1>
@@ -78,92 +80,93 @@
 
   <div id="results" class="results"></div>
 
-<script>
-  // Original Book Search Function
-  function go() {
-    const term = encodeURIComponent(document.getElementById('q').value);
-    const libs = {
-      "Goodreads": "https://www.goodreads.com/search?q=",
-      "Libby (East Riding)": "https://libbyapp.com/search/eastridinguk/search/query-",
-      "East Riding (BorrowBox)": "https://eastriding.borrowbox.com/search?format=eAudiobooks&q=",
-      "Leeds (BorrowBox)": "https://leeds.borrowbox.com/search?format=eAudiobooks&q=",
-      "North Yorkshire (BorrowBox)": "https://northyorkshire.borrowbox.com/search?format=eAudiobooks&q=",
-      "Spotify": "https://open.spotify.com/search/"
-    };
+  <script>
+    // Original Book Search Function
+    function go() {
+      const term = encodeURIComponent(document.getElementById('q').value);
+      const libs = {
+        "Goodreads": "https://www.goodreads.com/search?q=",
+        "Libby (East Riding)": "https://libbyapp.com/search/eastridinguk/search/query-",
+        "East Riding (BorrowBox)": "https://eastriding.borrowbox.com/search?format=eAudiobooks&q=",
+        "Leeds (BorrowBox)": "https://leeds.borrowbox.com/search?format=eAudiobooks&q=",
+        "North Yorkshire (BorrowBox)": "https://northyorkshire.borrowbox.com/search?format=eAudiobooks&q=",
+        "Spotify": "https://open.spotify.com/search/"
+      };
 
-    const container = document.getElementById('results');
-    container.innerHTML = "<h3>Book Results</h3>"; 
+      const container = document.getElementById('results');
+      container.innerHTML = "<h3>Book Results</h3>";
 
-    Object.entries(libs).forEach(([name, base]) => {
-      let url = name.includes("Libby") ? base + term + "/page-1" : base + term;
-      container.innerHTML += `<a href="${url}" target="_blank">${name}</a>`;
-    });
+      Object.entries(libs).forEach(([name, base]) => {
+        let url = name.includes("Libby") ? base + term + "/page-1" : base + term;
+        container.innerHTML += `<a href="${url}" target="_blank">${name}</a>`;
+      });
 
-    container.innerHTML += `
+      container.innerHTML += `
       <a href="https://audiobookbay.lu/" target="_blank">AudiobookBay (Home)</a>
       <a href="https://oceanofpdf.com/" target="_blank">Ocean of PDF</a>
     `;
-  }
+    }
 
-  function toSlug(str) {
-    return str.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
-  }
-  
-  function searchBooksByCountry() {
-    const raw = document.getElementById('countryBooks').value;
-    if (!raw) return;
-    const slug = toSlug(raw);
-    const container = document.getElementById('results');
-    container.innerHTML = `<h3>Books: ${raw}</h3>`;
-    
-    container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Goodreads: ${raw}</a>`;
-    container.innerHTML += `<a href="https://readaroundtheworldchallenge.com/books/tag/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Read Around the World: ${raw}</a>`;
-    
-    const googleQuery = encodeURIComponent(`novels set in ${raw} AND biographies about people from ${raw}`);
-    container.innerHTML += `<a href="https://www.google.com/search?q=${googleQuery}" target="_blank" style="border-left: 5px solid #e67e22;">Google: Novels & Biographies (${raw})</a>`;
-  }
-  
-  function searchMusic() {
-    const countryRaw = document.getElementById('country').value;
-    const country = encodeURIComponent(countryRaw);
-    const container = document.getElementById('results');
-    
-    if (!countryRaw) return;
+    function toSlug(str) {
+      return str.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+    }
 
-    container.innerHTML = `<h3>Music Discovery: ${countryRaw}</h3>`; 
+    function searchBooksByCountry() {
+      const raw = document.getElementById('countryBooks').value;
+      if (!raw) return;
+      const slug = toSlug(raw);
+      const container = document.getElementById('results');
+      container.innerHTML = `<h3>Books: ${raw}</h3>`;
 
-    const musicLinks = [
-      {
-        name: `Identify Genres & Artists: ${countryRaw}`,
-        url: `https://www.google.com/search?q=Identify+for+${country}:+a+traditional+music+genre,+a+popular+or+mainstream+artist,+and+an+experimental+fusion+act`
-      },
-      {
-        name: `BBC Music Planet: ${countryRaw}`,
-        url: `https://www.google.com/search?q=BBC+Music+Planet+${country}`
-      },
-      {
-        name: `Guardian Global Album: ${countryRaw}`,
-        url: `https://www.google.com/search?q=Guardian+Global+album+of+the+month+${country}`
-      },
-      {
-        name: `Songlines Reviews: ${countryRaw}`,
-        url: `https://www.songlines.co.uk/reviews-search?query=${country}`
-      },
-      {
-        name: `Beehype: ${countryRaw}`,
-        url: `https://beehy.pe/place/${country}`
-      },
-      {
-        name: `Chosic: Music by Country`,
-        url: `https://www.chosic.com/search-results/?q=${country}`
-      }
-    ];
+      container.innerHTML += `<a href="https://www.goodreads.com/shelf/show/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Goodreads: ${raw}</a>`;
+      container.innerHTML += `<a href="https://readaroundtheworldchallenge.com/books/tag/${slug}" target="_blank" style="border-left: 5px solid #e67e22;">Read Around the World: ${raw}</a>`;
 
-    musicLinks.forEach(link => {
-      container.innerHTML += `<a href="${link.url}" target="_blank" style="border-left: 5px solid #28a745;">${link.name}</a>`;
-    });
-  }
-</script>
+      const googleQuery = encodeURIComponent(`novels set in ${raw} AND biographies about people from ${raw}`);
+      container.innerHTML += `<a href="https://www.google.com/search?q=${googleQuery}" target="_blank" style="border-left: 5px solid #e67e22;">Google: Novels & Biographies (${raw})</a>`;
+    }
+
+    function searchMusic() {
+      const countryRaw = document.getElementById('country').value;
+      const country = encodeURIComponent(countryRaw);
+      const container = document.getElementById('results');
+
+      if (!countryRaw) return;
+
+      container.innerHTML = `<h3>Music Discovery: ${countryRaw}</h3>`;
+
+      const musicLinks = [
+        {
+          name: `Identify Genres & Artists: ${countryRaw}`,
+          url: `https://www.google.com/search?q=Identify+for+${country}:+a+traditional+music+genre,+a+popular+or+mainstream+artist,+and+an+experimental+fusion+act`
+        },
+        {
+          name: `BBC Music Planet: ${countryRaw}`,
+          url: `https://www.google.com/search?q=BBC+Music+Planet+${country}`
+        },
+        {
+          name: `Guardian Global Album: ${countryRaw}`,
+          url: `https://www.google.com/search?q=Guardian+Global+album+of+the+month+${country}`
+        },
+        {
+          name: `Songlines Reviews: ${countryRaw}`,
+          url: `https://www.songlines.co.uk/reviews-search?query=${country}`
+        },
+        {
+          name: `Beehype: ${countryRaw}`,
+          url: `https://beehy.pe/place/${country}`
+        },
+        {
+          name: `Chosic: Music by Country`,
+          url: `https://www.chosic.com/search-results/?q=${country}`
+        }
+      ];
+
+      musicLinks.forEach(link => {
+        container.innerHTML += `<a href="${link.url}" target="_blank" style="border-left: 5px solid #28a745;">${link.name}</a>`;
+      });
+    }
+  </script>
 
 </body>
+
 </html>
